@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultório - Agendamento Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+        .calendar-day:hover {
+            transform: scale(1.05);
+        }
+        .selected-date {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        .time-slot {
+            transition: all 0.2s ease;
+        }
+        .time-slot:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .selected-time {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .nav-link.active {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-16 h-16 to-indigo-600 rounded-full flex items-center justify-center">
+                        <img src="/imgs/logo psicologia .png" alt="logo" class="w-16 h-16 object-contain">
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Consultório</h1>
+                </div>
+                <div class="flex space-x-1">
+                    <button onclick="showPage('home')" class="nav-link active px-4 py-2 rounded-lg font-medium transition-all duration-200">Início</button>
+                    <button onclick="showPage('agendamento')" class="nav-link px-4 py-2 rounded-lg font-medium transition-all duration-200 text-gray-600 hover:bg-gray-100">Agendamento</button>
+                    <button onclick="showPage('servicos')" class="nav-link px-4 py-2 rounded-lg font-medium transition-all duration-200 text-gray-600 hover:bg-gray-100">Serviços</button>
+                    <button onclick="showPage('contato')" class="nav-link px-4 py-2 rounded-lg font-medium transition-all duration-200 text-gray-600 hover:bg-gray-100">Contato</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="max-w-6xl mx-auto px-4 py-12">
+            <!-- Hero Section -->
+            <div class="text-center mb-16">
+                <div class="w-32 h-32 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mx-auto mb-6 flex items-center justify-center">
+                    <img src="/imgs/maria silva.jpg" alt="maria silva" class="w-32 h-32 rounded-full object-cover">
+                </div>
+                <h1 class="text-5xl font-bold text-gray-800 mb-4">Dra. Maria Silva</h1>
+                <p class="text-xl text-gray-600 mb-8">Psicóloga Clínica • CRP 12345</p>
+                <button onclick="showPage('agendamento')" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105">
+                    Agendar Consulta
+                </button>
+            </div>
+
+            <!-- About Section -->
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Sobre Mim</h2>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Sou psicóloga clínica com mais de 10 anos de experiência, especializada em terapia cognitivo-comportamental e atendimento a adultos e adolescentes.
+                    </p>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Minha abordagem é humanizada e personalizada, focando no bem-estar e desenvolvimento pessoal de cada paciente. Acredito que cada pessoa tem o potencial para superar seus desafios e alcançar uma vida mais plena.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Formação em Psicologia - USP</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Especialização em TCC</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Atendimento presencial e online</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-xl">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Especialidades</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                            <span class="text-gray-700">Ansiedade e Depressão</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <span class="text-gray-700">Relacionamentos</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+                            <span class="text-gray-700">Autoestima</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
+                            <span class="text-gray-700">Desenvolvimento Pessoal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agendamento Page -->
+    <div id="agendamento" class="page">
+        <div class="max-w-4xl mx-auto px-4 py-12">
+            <h1 class="text-4xl font-bold text-center text-gray-800 mb-12">Agendar Consulta</h1>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Calendar -->
+                <div class="bg-white rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Escolha a Data</h3>
+                    <div class="calendar">
+                        <div class="flex justify-between items-center mb-4">
+                            <button onclick="previousMonth()" class="p-2 hover:bg-gray-100 rounded-lg">
+                                <span class="text-gray-600">←</span>
+                            </button>
+                            <h4 id="currentMonth" class="text-lg font-semibold text-gray-800"></h4>
+                            <button onclick="nextMonth()" class="p-2 hover:bg-gray-100 rounded-lg">
+                                <span class="text-gray-600">→</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1 mb-2">
+                            <div class="text-center text-sm font-medium text-gray-500 py-2">Dom</div>
+                            <div class="text-center text-sm font-medium text-gray-500 py-2">Seg</div>
+                            <div class="text-center text-sm font-medium text-gray-500 py-2">Ter</div>
+                            <div class="text-center text-sm font-medium text-gray-500 py-2">Qua</div>
+                            <div class="text-center text-sm font-medium text-gray-500 py-2">Qui</div>
+                            <div class="text-center text-sm font-medium text-gray-500 py-2">Sex</div>
+                            <div class="text-center text-sm font-medium text-gray-500 py-2">Sáb</div>
+                        </div>
+                        <div id="calendarDays" class="grid grid-cols-7 gap-1"></div>
+                    </div>
+                </div>
+
+                <!-- Time Slots -->
+                <div class="bg-white rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Horários Disponíveis</h3>
+                    <div id="timeSlots" class="space-y-2">
+                        <p class="text-gray-500 text-center py-8">Selecione uma data para ver os horários</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Form -->
+            <div id="bookingForm" class="bg-white rounded-2xl p-8 shadow-xl mt-8" style="display: none;">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Dados para Agendamento</h3>
+                <form onsubmit="submitBooking(event)" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                            <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
+                            <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                            <input type="tel" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Consulta</label>
+                            <select required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Selecione</option>
+                                <option value="primeira">Primeira Consulta</option>
+                                <option value="retorno">Consulta de Retorno</option>
+                                <option value="online">Consulta Online</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Observações (opcional)</label>
+                        <textarea rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Alguma informação adicional..."></textarea>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="text-sm text-blue-800">
+                            <strong>Data selecionada:</strong> <span id="selectedDateDisplay"></span><br>
+                            <strong>Horário:</strong> <span id="selectedTimeDisplay"></span>
+                        </p>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105">
+                        Confirmar Agendamento
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Serviços Page -->
+    <div id="servicos" class="page">
+        <div class="max-w-6xl mx-auto px-4 py-12">
+            <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">Serviços e Valores</h1>
+            <p class="text-center text-gray-600 mb-12">Escolha o plano que melhor se adequa às suas necessidades</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Consulta Individual -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-white text-2xl">👤</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Consulta Individual</h3>
+                    </div>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Sessão de 50 minutos</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Atendimento personalizado</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Presencial ou online</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Flexibilidade de horários</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gray-800 mb-2">R$ 150</div>
+                        <div class="text-gray-600 mb-6">por sessão</div>
+                        <button onclick="showPage('agendamento')" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-200">
+                            Agendar Agora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pacote Mensal -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-2 border-blue-500 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 py-1 rounded-full text-sm font-semibold">Mais Popular</span>
+                    </div>
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-white text-2xl">📅</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Pacote Mensal</h3>
+                    </div>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">4 sessões por mês</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Desconto de 15%</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Prioridade no agendamento</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Suporte via WhatsApp</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gray-800 mb-2">R$ 510</div>
+                        <div class="text-gray-600 mb-2">por mês</div>
+                        <div class="text-sm text-green-600 mb-6">Economia de R$ 90</div>
+                        <button onclick="showPage('agendamento')" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200">
+                            Agendar Agora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Primeira Consulta -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-white text-2xl">⭐</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Primeira Consulta</h3>
+                    </div>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Avaliação inicial completa</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Definição de objetivos</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Plano de tratamento</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-green-500">✓</span>
+                            <span class="text-gray-700">Sem compromisso</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gray-800 mb-2">R$ 120</div>
+                        <div class="text-gray-600 mb-6">sessão inicial</div>
+                        <button onclick="showPage('agendamento')" class="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-700 transition-all duration-200">
+                            Agendar Agora
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="bg-white rounded-2xl p-8 shadow-xl mt-12">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Informações Importantes</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">Formas de Pagamento</h4>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>• Dinheiro ou PIX (desconto de 5%)</li>
+                            <li>• Cartão de débito ou crédito</li>
+                            <li>• Transferência bancária</li>
+                            <li>• Parcelamento em até 3x sem juros</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">Política de Cancelamento</h4>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>• Cancelamento até 24h antes: sem cobrança</li>
+                            <li>• Cancelamento com menos de 24h: 50% do valor</li>
+                            <li>• Falta sem aviso: cobrança integral</li>
+                            <li>• Reagendamento gratuito com 24h de antecedência</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contato Page -->
+    <div id="contato" class="page">
+        <div class="max-w-4xl mx-auto px-4 py-12">
+            <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">Entre em Contato</h1>
+            <p class="text-center text-gray-600 mb-12">Tire suas dúvidas ou solicite mais informações</p>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Contact Form -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Envie sua Mensagem</h3>
+                    
+                    <form onsubmit="submitContact(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome</label>
+                            <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
+                            <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                            <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Assunto</label>
+                            <select required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Selecione um assunto</option>
+                                <option value="duvida">Dúvida sobre consultas</option>
+                                <option value="agendamento">Problema com agendamento</option>
+                                <option value="valores">Informações sobre valores</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
+                            <textarea rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Descreva sua dúvida ou solicitação..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105">
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl p-8 shadow-xl">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">Informações de Contato</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="text-blue-600 text-xl">📧</span>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">E-mail</p>
+                                    <p class="text-gray-600">contato@consultorio.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                    <span class="text-green-600 text-xl">📱</span>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">WhatsApp</p>
+                                    <p class="text-gray-600">(11) 99999-9999</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <span class="text-purple-600 text-xl">📍</span>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Endereço</p>
+                                    <p class="text-gray-600">Rua das Flores, 123<br>São Paulo - SP</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 shadow-xl">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">Horário de Atendimento</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Segunda a Sexta</span>
+                                <span class="text-gray-600">8h às 18h</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Sábado</span>
+                                <span class="text-gray-600">8h às 12h</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Domingo</span>
+                                <span class="text-gray-600">Fechado</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-8 text-white">
+                        <h3 class="text-xl font-bold mb-4">Atendimento de Emergência</h3>
+                        <p class="mb-4">Para situações de crise ou emergência psicológica:</p>
+                        <p class="font-semibold">CVV - Centro de Valorização da Vida</p>
+                        <p class="text-lg">📞 188 (24h gratuito)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                link.classList.add('text-gray-600', 'hover:bg-gray-100');
+            });
+            
+            event.target.classList.add('active');
+            event.target.classList.remove('text-gray-600', 'hover:bg-gray-100');
+        }
+
+        // Calendar functionality
+        let currentDate = new Date();
+        let selectedDate = null;
+        let selectedTime = null;
+
+        const months = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+
+        const timeSlots = [
+            '08:00', '09:00', '10:00', '11:00', 
+            '14:00', '15:00', '16:00', '17:00'
+        ];
+
+        function updateCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            document.getElementById('currentMonth').textContent = `${months[month]} ${year}`;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const calendarDays = document.getElementById('calendarDays');
+            calendarDays.innerHTML = '';
+            
+            // Empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                calendarDays.appendChild(emptyDay);
+            }
+            
+            // Days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day text-center py-2 cursor-pointer rounded-lg hover:bg-blue-100';
+                dayElement.textContent = day;
+                
+                const dayDate = new Date(year, month, day);
+                const today = new Date();
+                
+                // Disable past dates
+                if (dayDate < today.setHours(0,0,0,0)) {
+                    dayElement.className += ' text-gray-300 cursor-not-allowed';
+                } else {
+                    dayElement.onclick = () => selectDate(year, month, day);
+                }
+                
+                calendarDays.appendChild(dayElement);
+            }
+        }
+
+        function selectDate(year, month, day) {
+            selectedDate = new Date(year, month, day);
+            
+            // Update visual selection
+            document.querySelectorAll('.calendar-day').forEach(el => {
+                el.classList.remove('selected-date');
+            });
+            event.target.classList.add('selected-date');
+            
+            // Show available time slots
+            showTimeSlots();
+        }
+
+        function showTimeSlots() {
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+            
+            timeSlots.forEach(time => {
+                const timeButton = document.createElement('button');
+                timeButton.className = 'time-slot w-full p-3 border border-gray-300 rounded-lg hover:bg-blue-50 transition-all duration-200';
+                timeButton.textContent = time;
+                timeButton.onclick = () => selectTime(time, timeButton);
+                timeSlotsContainer.appendChild(timeButton);
+            });
+        }
+
+        function selectTime(time, element) {
+            selectedTime = time;
+            
+            // Update visual selection
+            document.querySelectorAll('.time-slot').forEach(el => {
+                el.classList.remove('selected-time');
+            });
+            element.classList.add('selected-time');
+            
+            // Show booking form
+            showBookingForm();
+        }
+
+        function showBookingForm() {
+            const form = document.getElementById('bookingForm');
+            form.style.display = 'block';
+            
+            // Update selected date and time display
+            const dateStr = selectedDate.toLocaleDateString('pt-BR');
+            document.getElementById('selectedDateDisplay').textContent = dateStr;
+            document.getElementById('selectedTimeDisplay').textContent = selectedTime;
+            
+            // Scroll to form
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            updateCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            updateCalendar();
+        }
+
+        function submitBooking(event) {
+            event.preventDefault();
+            
+            // Simulate booking submission
+            alert('Agendamento realizado com sucesso! Você receberá uma confirmação por e-mail em breve.');
+            
+            // Reset form
+            event.target.reset();
+            document.getElementById('bookingForm').style.display = 'none';
+            selectedDate = null;
+            selectedTime = null;
+            
+            // Reset calendar selection
+            document.querySelectorAll('.calendar-day').forEach(el => {
+                el.classList.remove('selected-date');
+            });
+            document.getElementById('timeSlots').innerHTML = '<p class="text-gray-500 text-center py-8">Selecione uma data para ver os horários</p>';
+        }
+
+        function submitContact(event) {
+            event.preventDefault();
+            alert('Mensagem enviada com sucesso! Retornaremos o contato em breve.');
+            event.target.reset();
+        }
+
+        // Initialize calendar
+        updateCalendar();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'974ac2dc4414f256',t:'MTc1NjEyMTQ2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
